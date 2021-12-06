@@ -18,6 +18,8 @@
 Для базы
  * illuminate/database
 
+Задеплои на digitalocean
+
 Установка:
 1.
 ```
