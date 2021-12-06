@@ -23,9 +23,12 @@
 ```
 git clone https://github.com/emplov/test
 ```
-2. Перейти в папке проекта и создать .env из .env.example
+2. Перейти в папке проекта и создать .env из .env.example. Ввести данные с базы в .env
 
-3. Ввести данные с базы в .env
+3. Установить зависимости
+```
+composer install
+```
 4. Запустить миграции
 ```
 ./vendor/bin/doctrine-migrations migrate
