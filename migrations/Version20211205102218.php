@@ -25,6 +25,7 @@ final class Version20211205102218 extends AbstractMigration
             email VARCHAR (255) NOT NULL,
             text LONGTEXT NOT NULL,
             status TINYINT UNSIGNED NOT NULL,
+            is_modified BOOLEAN DEFAULT FALSE,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         )");

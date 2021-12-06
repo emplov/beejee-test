@@ -24,7 +24,10 @@ class FrontController
     {
         $errors = Session::get('errors');
         Session::forget('errors');
+        $message = Session::get('message');
+        Session::forget('message');
 
+        $twig->addGlobal('message', $message);
         $twig->addGlobal('errors', $errors);
         $twig->addGlobal('authenticated', Auth::isAuthenticated());
 
@@ -111,6 +114,8 @@ class FrontController
                 'status' => Task::IN_PROCESS,
             ]);
 
+            Session::put('message', 'Успешно добавлено!');
+
             return redirect('/');
         }
 
@@ -143,8 +148,6 @@ class FrontController
     public function update(ServerRequest $request, $variables): Response
     {
         $validation = validate($request->getParsedBody(), [
-            'name' => 'required|max:255',
-            'email' => 'required|max:255',
             'task' => 'required',
             'status' => 'required|in:0,1',
         ]);
@@ -156,12 +159,16 @@ class FrontController
                 $task = Task::query()->where('id', $variables['id'])->first();
 
                 if ($task) {
-                    $task->update([
-                        'name' => $data['name'],
-                        'email' => $data['email'],
+                    $credentials = [
                         'text' => $data['task'],
                         'status' => $data['status'],
-                    ]);
+                    ];
+
+                    if ($task->text != $data['task']) {
+                        $credentials['is_modified'] = true;
+                    }
+
+                    $task->update($credentials);
 
                     return redirect('/');
                 }

@@ -10,6 +10,6 @@ $route->get('/login', [FrontController::class, 'login']);
 $route->post('/login', [FrontController::class, 'authenticate']);
 $route->post('/logout', [FrontController::class, 'logout']);
 $route->get('/tasks/{id}/edit', [FrontController::class, 'edit']);
-$route->post('/tasks/{id}/edit', [FrontController::class, 'update']);
+$route->post('/tasks/{id}/edit', [FrontController::class, 'update'])->middleware(new \App\Middleware\AuthMiddleware());
 $route->get('/tasks/create', [FrontController::class, 'create']);
 $route->post('/tasks/create', [FrontController::class, 'store']);

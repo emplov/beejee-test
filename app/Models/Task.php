@@ -14,5 +14,6 @@ class Task extends Model
         'email',
         'text',
         'status',
+        'is_modified',
     ];
 }

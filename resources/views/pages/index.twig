@@ -30,6 +30,11 @@
             <div class="col-md-12 mt-3">
                 <div class="card">
                     <div class="card-body">
+                        {% if message %}
+                            <div class="alert alert-success" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endif %}
                         <form action="/" method="get">
                             <div>
                                 <label for="name">Фильтр по имени</label>
@@ -88,7 +93,10 @@
                                             {% if task.status == 0 %}
                                                 В процессе
                                             {% else %}
-                                                Сделано
+                                                Выполнено
+                                            {% endif %}
+                                            {% if task.is_modified %}
+                                                <br> Отредактировано администратором
                                             {% endif %}
                                         </td>
                                         {% if authenticated %}

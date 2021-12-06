@@ -26,14 +26,6 @@
 
                         <form action="/tasks/{{ task.id }}/edit" method="post">
                             <div class="mb-3">
-                                <label for="name">Имя</label>
-                                <input type="text" class="form-control" name="name" id="name" value="{{ task.name }}">
-                            </div>
-                            <div class="mb-3">
-                                <label for="email">Почта</label>
-                                <input type="text" class="form-control" name="email" id="email" value="{{ task.email }}">
-                            </div>
-                            <div class="mb-3">
                                 <label for="task">Задача</label>
                                 <textarea class="form-control" name="task" id="task">{{ task.text }}</textarea>
                             </div>
