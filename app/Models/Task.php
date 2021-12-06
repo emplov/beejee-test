@@ -9,8 +9,6 @@ class Task extends Model
     const IN_PROCESS = 0;
     const DONE = 1;
 
-    protected string $table = 'tasks';
-
     protected $fillable = [
         'name',
         'email',

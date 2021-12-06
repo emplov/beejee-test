@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
 {
-    protected string $table = 'users';
-
     /**
      * @param string $password
      * @return string
