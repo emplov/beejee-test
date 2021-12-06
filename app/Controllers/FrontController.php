@@ -36,28 +36,49 @@ class FrontController
      */
     public function main(ServerRequest $request): Response
     {
-        $queries = $request->getQueryParams();
+        $queryParams = $request->getQueryParams();
+
+        $page = 1;
+
+        if (isset($queryParams['page'])) {
+            $page = (int) $queryParams['page'];
+        }
 
         $tasks = Task::query()
-            ->latest('id')
-            ->when($queries['id'] ?? null, function ($query, $order) {
-                $query->orderBy('id', $order);
+            ->when(empty($queryParams), function ($query) {
+                $query->latest('id');
             })
-            ->when($queries['name'] ?? null, function ($query, $order) {
+            ->when($queryParams['status'] ?? null, function ($query, $order) {
+                $query->orderBy('status', $order);
+            })
+            ->when($queryParams['name'] ?? null, function ($query, $order) {
                 $query->orderBy('name', $order);
             })
-            ->when($queries['email'] ?? null, function ($query, $order) {
+            ->when($queryParams['email'] ?? null, function ($query, $order) {
                 $query->orderBy('email', $order);
             })
-            ->simplePaginate(3);
+            ->simplePaginate(3, ['*'], 'page', $page);
 
-        $total = User::query()->count();
+        $total = Task::query()->count();
+
+        $queries = [];
+
+        if (isset($queryParams['name'])) {
+            $queries['name'] = $queryParams['name'];
+        }
+
+        if (isset($queryParams['email'])) {
+            $queries['email'] = $queryParams['email'];
+        }
+
+        if (isset($queryParams['status'])) {
+            $queries['status'] = $queryParams['status'];
+        }
 
         return response($this->twig->render('pages/index.twig', [
             'tasks' => $tasks->items(),
-            'total' => $total,
-            'perPage' => $tasks->perPage(),
-            'hasMorePages' => $tasks->hasMorePages(),
+            'pagesCount' => ceil($total / $tasks->perPage()),
+            'queries' => http_build_query($queries),
         ]));
     }
 

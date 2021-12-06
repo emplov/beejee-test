@@ -8,12 +8,13 @@
                     <div class="card-body">
                         <div style="display: flex;justify-content: space-between;">
                             {% if not authenticated %}
-                            <a href="/login" class="btn btn-primary">
-                                Авторизация
-                            </a>
+                                <a href="/login" class="btn btn-primary">
+                                    Авторизация
+                                </a>
                             {% else %}
                                 <form action="/logout" method="post">
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены?');">
+                                    <button type="submit" class="btn btn-danger"
+                                            onclick="return confirm('Вы уверены?');">
                                         Выйти
                                     </button>
                                 </form>
@@ -31,43 +32,30 @@
                     <div class="card-body">
                         <form action="/" method="get">
                             <div>
-                                <label for="id">Флильтр по ID</label>
-                                <select name="id" id="id" class="form-control mb-2" onchange="this.form.submit()">
-                                    <option value=""></option>
-                                    <option value="desc">desc</option>
-                                    <option value="asc">asc</option>
-                                </select>
-                            </div>
-                        </form>
-                        <form action="/" method="get">
-                            <div>
                                 <label for="name">Флильтр по имени</label>
-                                <select name="name" id="name" class="form-control mb-2" onchange="this.form.submit()">
+                                <select name="name" id="name" class="form-control mb-2">
                                     <option value=""></option>
                                     <option value="desc">desc</option>
                                     <option value="asc">asc</option>
                                 </select>
                             </div>
-                        </form>
-                        <form action="/" method="get">
                             <div>
                                 <label for="email">Флильтр по почте</label>
-                                <select name="email" id="email" class="form-control mb-2" onchange="this.form.submit()">
+                                <select name="email" id="email" class="form-control mb-2">
                                     <option value=""></option>
                                     <option value="desc">desc</option>
                                     <option value="asc">asc</option>
                                 </select>
                             </div>
-                        </form>
-                        <form action="/" method="get">
                             <div>
                                 <label for="status">Флильтр по статусу</label>
-                                <select name="status" id="status" class="form-control mb-2" onchange="this.form.submit()">
+                                <select name="status" id="status" class="form-control mb-2">
                                     <option value=""></option>
                                     <option value="desc">desc</option>
                                     <option value="asc">asc</option>
                                 </select>
                             </div>
+                            <button class="btn btn-primary">Фильтр</button>
                         </form>
                     </div>
                 </div>
@@ -85,7 +73,7 @@
                                     <th scope="col">Задача</th>
                                     <th scope="col">Статус</th>
                                     {% if authenticated %}
-                                    <th scope="col">Действия</th>
+                                        <th scope="col">Действия</th>
                                     {% endif %}
                                 </tr>
                                 </thead>
@@ -104,17 +92,31 @@
                                             {% endif %}
                                         </td>
                                         {% if authenticated %}
-                                        <td>
-                                            <a href="/tasks/{{ task.id }}/edit" class="btn btn-primary">
-                                                Ред-ть
-                                            </a>
-                                        </td>
+                                            <td>
+                                                <a href="/tasks/{{ task.id }}/edit" class="btn btn-primary">
+                                                    Ред-ть
+                                                </a>
+                                            </td>
                                         {% endif %}
                                     </tr>
                                 {% endfor %}
                                 </tbody>
                             </table>
                         </div>
+                        {% if pagesCount != 0 %}
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    {% for page in range(1, pagesCount) %}
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                               href="/?page={{ page }}{% if queries %}&{{ queries }}{% endif %}">
+                                                {{ page }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </nav>
+                        {% endif %}
                     </div>
                 </div>
             </div>
