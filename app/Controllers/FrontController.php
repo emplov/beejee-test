@@ -47,8 +47,22 @@ class FrontController
             $page = (int) $queryParams['page'];
         }
 
+        $queries = [];
+
+        if (isset($queryParams['name'])) {
+            $queries['name'] = $queryParams['name'];
+        }
+
+        if (isset($queryParams['email'])) {
+            $queries['email'] = $queryParams['email'];
+        }
+
+        if (isset($queryParams['status'])) {
+            $queries['status'] = $queryParams['status'];
+        }
+
         $tasks = Task::query()
-            ->when(empty($queryParams), function ($query) {
+            ->when(empty($queries), function ($query) {
                 $query->latest('id');
             })
             ->when($queryParams['status'] ?? null, function ($query, $order) {
@@ -63,20 +77,6 @@ class FrontController
             ->simplePaginate(3, ['*'], 'page', $page);
 
         $total = Task::query()->count();
-
-        $queries = [];
-
-        if (isset($queryParams['name'])) {
-            $queries['name'] = $queryParams['name'];
-        }
-
-        if (isset($queryParams['email'])) {
-            $queries['email'] = $queryParams['email'];
-        }
-
-        if (isset($queryParams['status'])) {
-            $queries['status'] = $queryParams['status'];
-        }
 
         return response($this->twig->render('pages/index.twig', [
             'tasks' => $tasks->items(),
